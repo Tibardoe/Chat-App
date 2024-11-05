@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+    <h1>Ting</h1>
+    <div class="chat-container">
+        <ul class="text-container">
+            <li class="chat">Hi</li>
+        </ul>
+
+        <div class="input-area">
+            <input class="msg-input" type="text" placeholder="Text Message">
+            <button onclick="sendMessage()" class="send-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 16 16">
+                    <path fill="rgb(59, 157, 46)" d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0" />
+                    <path fill="white"
+                        d="M8.5 11.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z" />
+                </svg>
+            </button>
+        </div>
+
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        const socket = io();
+
+        function sendMessage() {
+            const message = document.querySelector(".msg-input").value;
+            socket.emit("chat message", message);
+            document.querySelector(".msg-input").value = "";
+        }
+
+        socket.on("chat message", (message) => {
+            const item = document.createElement("li");
+            item.classList.add("chat")
+            item.textContent = message;
+            document.querySelector(".text-container").appendChild(item)
+        });
+    </script>
+</body>
+
+</html>
